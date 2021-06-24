@@ -6,8 +6,7 @@ export default class PostDetail extends React.Component {
     super(props)
     this.state = {
       lstPost: [],
-      postComents: [],
-      isShowModalDetail: false
+      postComents: []
     }
   }
   componentDidMount() {
@@ -21,9 +20,6 @@ export default class PostDetail extends React.Component {
         })
   }
   onShowDetailPost = (post) => {
-    this.setState({
-      isShowModalDetail: !this.state.isShowModalDetail
-    })
     fetch(`https://jsonplaceholder.typicode.com/posts/${post.userId}/comments`)
       .then(response => response.json())
       .then(
@@ -58,31 +54,43 @@ export default class PostDetail extends React.Component {
             ))}
           </tbody>
         </table>
-        {isShowModalDetail ?
-          <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <table class="table table-dark table-striped">
-              <thead>
-                <tr>
-                  <th scope="col">STT</th>
-                  <th scope="col">Name</th>
-                  <th scope="col">Email</th>
-                  <th scope="col">Body</th>
-                </tr>
-              </thead>
-              <tbody>
-                {
-                  postComents.map(item => (
+        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModal" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close" onClick={() => this.setState({})}>
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <table class="table table-dark table-striped">
+                  <thead>
                     <tr>
-                      <th scope="row">{item.id}</th>
-                      <td>{item.name}</td>
-                      <td>{item.email}</td>
-                      <td>@{item.body}</td>
+                      <th scope="col">STT</th>
+                      <th scope="col">Name</th>
+                      <th scope="col">Email</th>
+                      <th scope="col">Body</th>
                     </tr>
-                  ))
-                }
-              </tbody>
-            </table>
-          </div> : ""}
+                  </thead>
+                  <tbody>
+                    {
+                      postComents.map(item => (
+                        <tr>
+                          <th scope="row">{item.id}</th>
+                          <td>{item.name}</td>
+                          <td>{item.email}</td>
+                          <td>@{item.body}</td>
+                        </tr>
+                      ))
+                    }
+                  </tbody>
+                </table>
+              </div>
+
+            </div>
+          </div>
+        </div>
       </div>
     )
   }
